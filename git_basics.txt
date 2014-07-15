@@ -1,0 +1,6 @@
+git pull : Änderungen vom server laden
+git push : Änderungen zum Server senden
+git status : aktuellen status anzeigen
+git add : Datei zu HEAD hinzufügen (wird zu nächstem commit hinzugefügt)
+git commit -m "Nachricht": aktuellen HEAD committen (neuer sicherungspunkt wird angelegt)
+gitk : commit historie anschauen
