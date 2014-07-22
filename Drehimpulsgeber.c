@@ -19,12 +19,20 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+
+#define EINGANG_A 1							//Makros für Eingangsbits
+#define EINGANG_B 2
+
+
+
+
+
 int main(void)
 {
-	DDRB=0x00;
-	PORTB=0xFF;
+	DDRB=0x00;													//Port B als eingang
+	PORTB=0xFF;													//Pull up anschalten
 	
-	DDRC=0xFF;
+	DDRC=0xFF;													//Port C ausgang
 	
 	
 	uint8_t vorherig_halbschritt = 0;
@@ -34,26 +42,26 @@ int main(void)
     while(1)
     {
 
-		aktuell=PINB & (Bit2(2,1));								//Beide Eingäne holen
-		if ((aktuell ^ vorherig_gesamtschritt)==(Bit2(2,1) ))	//Wenn sich beide Bits geändert haben (neue position)
+		aktuell=PINB & (Bit2(EINGANG_A,EINGANG_B));								//Beide Eingäne holen
+		if ((aktuell ^ vorherig_gesamtschritt)==(Bit2(EINGANG_A,EINGANG_B) ))	//Wenn sich beide Bits geändert haben (neue position)
 		{
-			if ((aktuell ^ vorherig_halbschritt)==Bit(1))		//Je nachdem welches Bit sich als letztes geändert hat: 
+			if ((aktuell ^ vorherig_halbschritt)==Bit(EINGANG_A))				//Je nachdem welches Bit sich als letztes geändert hat: 
 			{
 				//entweder hochzählen
-				PORTC |= Bit(2);				//zum test Led blinken lassen
-				_delay_ms(500);					//später auswertung
-				PORTC &= ~Bit(2);
+				PORTC |= Bit(1);				//zum test Led blinken lassen
+				_delay_ms(50);					//später auswertung
+				PORTC &= ~Bit(1);
 			}
-			else
+			else if ((aktuell ^ vorherig_halbschritt)==Bit(EINGANG_B))
 			{
 				//oder runterzählen
 				PORTC |= Bit(0);				//zum test Led blinken lassen
-				_delay_ms(500);					//später auswertung
+				_delay_ms(50);					//später auswertung
 				PORTC &= ~Bit(0);
 			}
-			vorherig_gesamtschritt=aktuell;						//akt. als neuer wert für gesamtschritt
+			vorherig_gesamtschritt=aktuell;										//akt. als neuer wert für gesamtschritt
 		}
-		vorherig_halbschritt=aktuell;							//akt. als neuer wert für halbschritt
+		vorherig_halbschritt=aktuell;											//akt. als neuer wert für halbschritt
 
     }
 }
