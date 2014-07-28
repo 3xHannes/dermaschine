@@ -1,0 +1,45 @@
+***********************************
+Port A - Diverses:
+-----------------
+PA0 - NTC (ADC)
+PA1 - NTC (Vcc)
+PA2 - Relais Ventilator
+ .
+ .
+ .
+ .
+PA7 - Druckknopf Drehimpulsgeber
+***********************************
+Port B - Schieberegister:
+------------------------
+PB0 - SCK
+PB1 - SI
+PB2 - /OE_Bargrpah
+PB3 - /OE_LED (Beleuchtung mit PWM)
+PB4 - /OE_Motor
+PB5 - RCK_Bargrpah
+PB6 - RCK_LED
+PB7 - RCK_Motor
+***********************************
+Port C - Inputs:
+---------------
+PC0 - Taster1
+PC1 - Taster2
+PC2 - Taster3
+PC3 - Taster4
+PC4 - Taster5
+PC5 - Random
+PC6 - Dreh_1
+PC7 - Dreh_2
+***********************************
+Port D - Bluetoothmodul & Display:
+---------------------------------
+PD0 - RXD
+PD1 - TXD
+PD2 - D4
+PD3 - D5
+PD4 - D6
+PD5 - D7
+PD6 - RS
+PD7 - E
+***********************************
