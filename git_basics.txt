@@ -4,3 +4,13 @@ git status : aktuellen status anzeigen
 git add : Datei zu HEAD hinzufügen (wird zu nächstem commit hinzugefügt)
 git commit -m "Nachricht": aktuellen HEAD committen (neuer sicherungspunkt wird angelegt)
 gitk : commit historie anschauen
+
+
+
+vorgehensweise:
+1.)git pull => neue sachen vom server laden
+2.)git status => alle lokalen änderungen etc werden angezeigt
+3.)neue dateien/Ordner erstellt oder bearbeitet?
+	=> git add datei1.bla datei2.bla
+4.)git commit -m "folgende änderungen blabla"
+5.)git push => änderungen zum server senden
