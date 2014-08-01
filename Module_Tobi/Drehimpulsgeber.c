@@ -35,33 +35,32 @@ int main(void)
 	DDRC=0xFF;													//Port C ausgang
 	
 	
-	uint8_t vorherig_halbschritt = 0;
-	uint8_t vorherig_gesamtschritt = 0;
+	uint8_t vorherig = 0;
 	uint8_t aktuell;
 	
     while(1)
     {
 
-		aktuell=PINB & (Bit2(EINGANG_A,EINGANG_B));								//Beide Eingäne holen
-		if ((aktuell ^ vorherig_gesamtschritt)==(Bit2(EINGANG_A,EINGANG_B) ))	//Wenn sich beide Bits geändert haben (neue position)
+		aktuell=PINB & (Bit2(EINGANG_A,EINGANG_B));				//Beide Eingäne maskieren
+		
+		if(aktuell==0)											//Wenn beide Eingänge auf 0 sind (Stellung genau auf Rasterung)
 		{
-			if ((aktuell ^ vorherig_halbschritt)==Bit(EINGANG_A))				//Je nachdem welches Bit sich als letztes geändert hat: 
+			if (aktuell ^ vorherig == Bit(EINGANG_A))			//je nachdem aus welcher Richtung man kommt
 			{
 				//entweder hochzählen
 				PORTC |= Bit(1);				//zum test Led blinken lassen
 				_delay_ms(50);					//später auswertung
-				PORTC &= ~Bit(1);
+				PORTC &= ~Bit(1);				
 			}
-			else if ((aktuell ^ vorherig_halbschritt)==Bit(EINGANG_B))
+			if (aktuell ^ vorherig == Bit(EINGANG_B))
 			{
 				//oder runterzählen
 				PORTC |= Bit(0);				//zum test Led blinken lassen
 				_delay_ms(50);					//später auswertung
-				PORTC &= ~Bit(0);
+				PORTC &= ~Bit(0);				
 			}
-			vorherig_gesamtschritt=aktuell;										//akt. als neuer wert für gesamtschritt
 		}
-		vorherig_halbschritt=aktuell;											//akt. als neuer wert für halbschritt
+		vorherig=aktuell;
+	}	
 
-    }
 }
