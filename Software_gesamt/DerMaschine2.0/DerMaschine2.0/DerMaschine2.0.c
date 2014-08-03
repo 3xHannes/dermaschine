@@ -61,8 +61,8 @@ void berechnung_Pumpe(uint8_t auswahl_getrank, float schnaps_Zeit, float mischge
 	mischgetrank_Zeit= mischgetrank_Zeit * (100-schnaps_Prozent)/100;
 	
 	// Zum Testen Zeiten definieren
-	schnaps_Zeit = 1000;
-	mischgetrank_Zeit = 3000;
+	schnaps_Zeit = 2000;
+	mischgetrank_Zeit = 4000;
 	
 	
 	lcd_mixing(schnaps_Zeit,mischgetrank_Zeit);

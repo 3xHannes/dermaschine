@@ -160,14 +160,14 @@ void lcd_mixing(uint16_t ms_alk, uint16_t ms_nonalk)
 	
 	lcd_clear();
 	lcd_home();
-	lcd_string("Mischen lauft...");
-	// "ä" nachträglich einfügen
-	lcd_setcursor(9,1);
-	lcd_data(225);
+	
+	//lcd_string("Mischen lauft...");
+	//// "ä" nachträglich einfügen
+	//lcd_setcursor(9,1);
+	//lcd_data(225);
 	
 	//pumpe_aktiv(erste Pumpe);
-	//Ersatz-Code:
-	PORTC &= ~(1<<PC3);
+	lcd_string("Mischen: Alk");
 	
 	t2_start();
 	
@@ -178,9 +178,8 @@ void lcd_mixing(uint16_t ms_alk, uint16_t ms_nonalk)
 		{
 			tick_pumpe = 0;
 			//pumpe_aktiv(nächste Pumpe);
-			//Ersatz-Code:
-			PORTC |= (1<<PC3);
-			PORTC &= ~(1<<PC2);
+			lcd_setcursor(9,1);
+			lcd_string("Non-Alk");
 		}
 		if ((ms_timer2 / divisor) != fill_prev)
 		{
@@ -190,9 +189,7 @@ void lcd_mixing(uint16_t ms_alk, uint16_t ms_nonalk)
 	}
 	lcd_graph(Zeichen_LCD * 5);		// letztes Segment auch ausfüllen
 	//pumpe_stop();
-	//Ersatz-Code:
-	PORTC |= (1<<PC2);
-	
+
 	t2_stop();		// Timer anhalten
 	
 	_delay_ms(1400);
