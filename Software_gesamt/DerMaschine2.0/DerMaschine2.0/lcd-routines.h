@@ -10,7 +10,7 @@
 // Hier die verwendete Taktfrequenz in Hz eintragen, wichtig!
  
 #ifndef F_CPU
-#define F_CPU 8000000
+#define F_CPU 8000000UL
 #endif
 
 
@@ -112,8 +112,6 @@ void lcd_mischung();
 void lcd_ausgabegetrank(uint8_t liste);
 
 void lcd_anzeigegetranke(uint8_t getrank);
-
-void lcd_genereate_bar_graphics(void);
 
 void lcd_anzeigegetranke2();
  

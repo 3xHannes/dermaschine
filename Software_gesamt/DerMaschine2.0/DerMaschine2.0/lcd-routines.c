@@ -304,51 +304,6 @@ void lcd_anzeigegetranke(uint8_t getrank)
 	
 }
 
-void lcd_genereate_bar_graphics(void)
-{
-	// F?llstandszeichen generieren
-
-	uint8_t bar_1[8];
-	bar_1[0] = bar_1[7] = 0;
-	for (uint8_t i = 1; i < 7; i++)
-	{
-		bar_1[i] = 16;
-	}
-
-	uint8_t bar_2[8];
-	bar_2[0] = bar_2[7] = 0;
-	for (uint8_t i = 1; i < 7; i++)
-	{
-		bar_2[i] = 24;
-	}
-	
-	uint8_t bar_3[8];
-	bar_3[0] = bar_3[7] = 0;
-	for (uint8_t i = 1; i < 7; i++)
-	{
-		bar_3[i] = 28;
-	}
-	
-	uint8_t bar_4[8];
-	bar_4[0] = bar_4[7] = 0;
-	for (uint8_t i = 1; i < 7; i++)
-	{
-		bar_4[i] = 30;
-	}
-	
-	uint8_t bar_5[8];
-	bar_5[0] = bar_5[7] = 0;
-	for (uint8_t i = 1; i < 7; i++)
-	{
-		bar_5[i] = 31;
-	}
-	
-	lcd_generatechar(1, bar_1);
-	lcd_generatechar(2, bar_2);
-	lcd_generatechar(3, bar_3);
-	lcd_generatechar(4, bar_4);
-	lcd_generatechar(5, bar_5);	
-}
 
 void lcd_anzeigegetranke2()
 {

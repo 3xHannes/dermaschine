@@ -14,6 +14,7 @@
 #include "lcd-routines.h"
 #include "delay.h"
 #include <avr/interrupt.h>
+#include "mixing.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,41 +22,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // #define Taster_Port PINB
-
-
-
-void lcd_mixing(uint16_t Mixdauer)
-{
-	Mixdauer /= 100;		// 80 Segmente in der LCD-Balkenanzeige
-	lcd_clear();
-	lcd_home();
-	lcd_string("Mischen lauft...");// "?" nachtr?glich einf?gen
-	
-	lcd_setcursor(9,1);
-	lcd_data(225);
-	
-	lcd_setcursor(0,2);
-	
-	for (uint8_t i = 0; i < 20; i++)
-	{
-		for (uint8_t j = 1; j < 6; j++)
-		{
-			lcd_setcursor(i,2);
-			lcd_data(j);
-			sleep(Mixdauer);
-		}
-	}
-	_delay_ms(1000);
-	lcd_setcursor(0,2);
-	for (uint8_t i = 0; i < 16; i++)
-	{
-		lcd_data(32);
-	}
-	lcd_clear();
-	lcd_home();
-	lcd_string("Guten Durst!");
-	sleep(2500);
-}
 
 
 void sleep ( int ms )
@@ -94,13 +60,12 @@ void berechnung_Pumpe(uint8_t auswahl_getrank, float schnaps_Zeit, float mischge
 	schnaps_Zeit = schnaps_Zeit * (schnaps_Prozent/100);
 	mischgetrank_Zeit= mischgetrank_Zeit * (100-schnaps_Prozent)/100;
 	
-	lcd_mixing(schnaps_Zeit+mischgetrank_Zeit);
+	// Zum Testen Zeiten definieren
+	schnaps_Zeit = 1000;
+	mischgetrank_Zeit = 3000;
 	
-	// Hier Pumpe einschalten
-	//sleep(schnaps_Zeit);
 	
-	// Hier 2. Pumpe einschalten
-	//sleep(mischgetrank_Zeit);
+	lcd_mixing(schnaps_Zeit,mischgetrank_Zeit);
 	
 	//Getränk fertig gemischt
 	
@@ -133,10 +98,13 @@ int main(void)
 	
 	DDRD  =	0xFF;
 	PORTD = 0x00;
+	
 	lcd_init();
 	init_Timer0();
 	lcd_clear();
-	lcd_genereate_bar_graphics();
+	
+	t2_init();
+	lcd_generate_bar_graphics();
 	
 	sei();
 	lcd_startbild();
@@ -166,6 +134,19 @@ uint16_t mischgetrank_Zeit = 0;
 	
 	menue_mischen:
 	{
+		lcd_schnaps();
+		taster = taster_entprellung();
+		
+		switch(taster)
+		{
+			case 1 : schnaps_auswahl = asbach;		schnaps_Zeit = Ascbach_Zeit; break;
+			case 2 : schnaps_auswahl = wodka;		schnaps_Zeit = Wokda_Zeit; break;
+			case 3 : schnaps_auswahl = whyski;      schnaps_Zeit = Whisky_Zeit;break;
+			case 4 : schnaps_auswahl = rum;		    schnaps_Zeit = Rum_Zeit;break;
+			case 5 : goto start; break;
+		}
+		
+		
 		lcd_mischgetrank();
 		taster = taster_entprellung();
 		
@@ -179,35 +160,26 @@ uint16_t mischgetrank_Zeit = 0;
 		}
 		
 		
-		lcd_schnaps();
-		taster = taster_entprellung();
-		
-		switch(taster)
-		{
-			case 1 : schnaps_auswahl = asbach;		schnaps_Zeit = Ascbach_Zeit; break;  
-			case 2 : schnaps_auswahl = wodka;		schnaps_Zeit = Wokda_Zeit; break;
-			case 3 : schnaps_auswahl = whyski;      schnaps_Zeit = Whisky_Zeit;break;
-			case 4 : schnaps_auswahl = rum;		    schnaps_Zeit = Rum_Zeit;break;
-			case 5 : goto start; break;
-		}
-		
 		lcd_mischung();
 		// Hier steht Routinenaufruf von Bargraph + Drehimpulsgeber
 		sleep(2000);
 		
+		// zum Testen hier 40 zugewiesen
 		schnaps_Prozent=40;
 		
 		
 		lcd_ausgabegetrank(auswahl_getrank);
 		lcd_anzeigegetranke2( );
-		//sleep(2000);
+
+
+		// Getränke zwei Sekunden anzeigen
+		sleep(2000);
 		
-		// Getränke zwei sekunden anzeigen
-		millisekunden=0;
-		do 
-		{
-			
-		} while (millisekunden<2000);
+		//millisekunden=0;
+		//do 
+		//{
+			//
+		//} while (millisekunden<2000);
 		
 		berechnung_Pumpe(auswahl_getrank, schnaps_Zeit, mischgetrank_Zeit, schnaps_Prozent);
 	
